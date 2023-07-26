@@ -4,17 +4,18 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+
 	"url-redirector-api-gateway/pkg/url/pb"
 
 	"github.com/gin-gonic/gin"
 )
 
-type AddURLRequestBody struct {
+type AddUrlRequestBody struct {
 	Url string `json:"url"`
 }
 
-func AddURL(ctx *gin.Context, client pb.URLServiceClient) {
-	var reqBody AddURLRequestBody
+func AddUrl(ctx *gin.Context, client pb.UrlServiceClient) {
+	var reqBody AddUrlRequestBody
 
 	err := ctx.BindJSON(&reqBody)
 	if err != nil {
@@ -32,14 +33,14 @@ func AddURL(ctx *gin.Context, client pb.URLServiceClient) {
 		return
 	}
 
-	req := &pb.AddURLRequest{
+	req := &pb.AddUrlRequest{
 		UserId: userId.(int64),
 		Url:    reqBody.Url,
 	}
 
 	fmt.Println(req)
 
-	res, err := client.AddURL(ctx, req)
+	res, err := client.AddUrl(ctx, req)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)
 		return
